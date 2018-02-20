@@ -13,7 +13,7 @@ class ActionValueEstimator:
     动作值函数估计对象
     """
 
-    def __init__(self, env, featurizer):
+    def __init__(self, env, featurizer, learning_rate=0.01):
 
         self.featurizer = featurizer
 
@@ -23,7 +23,7 @@ class ActionValueEstimator:
         self.env = env
         self.models = []
         for _ in range(self.env.action_space.n):
-            model = SGDRegressor(learning_rate="constant")
+            model = SGDRegressor(learning_rate="constant", eta0=learning_rate)
             # We need to call partial_fit once to initialize the model
             # or we get a NotFittedError when trying to make a prediction
             # This is quite hacky.

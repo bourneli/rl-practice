@@ -1,6 +1,6 @@
 require(ggplot2)
 
-episode_stat <- read.csv('../data/q_learning_car_mountain.csv')
+episode_stat <- read.csv('../data/q_learning_car_mountain-500.csv')
 
 
 
@@ -17,18 +17,15 @@ p
 
 
 # 平滑曲线，方便观察
-feature_method <- c('Pass', 'RBF', 'Scale')
-
-
 fit_result <- data.frame()
-for(feature in feature_method) {
+for(feature in as.character(unique(episode_stat$feature))) {
   index <- episode_stat$feature == feature
   x <- episode_stat$episode[index]
   y <- episode_stat$reward[index]
   fit <- loess(y~x)
   fit_y <- predict(fit)
   
-  this_result <- data.frame(feature=paste(feature,'fitted'), episode = x, reward = fit_y)
+  this_result <- data.frame(feature=paste(feature,'拟合'), episode = x, reward = fit_y)
   fit_result <- rbind(fit_result, this_result)
 }
 

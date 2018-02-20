@@ -51,13 +51,19 @@ class RBFFeatureizer(Featurizer):
 
 class Order2CrossFeaturizer(Featurizer):
 
+    def __init__(self, env):
+        self.scaler = ScaleFeaturizer(env)
+
     def transform(self, data):
-        extended_size = int(data.size * (data.size - 1) / 2)
+
+        scale_data = self.scaler.transform(data)
+
+        extended_size = int(scale_data.size * (scale_data.size - 1) / 2)
         extended_array = np.zeros(shape=extended_size)
         index = 0
-        for i in range(0, data.size):
-            for j in range(i + 1, data.size):
-                extended_array[index] = data[i] * data[j]
+        for i in range(0, scale_data.size):
+            for j in range(i + 1, scale_data.size):
+                extended_array[index] = scale_data[i] * scale_data[j]
                 index += 1
 
-        return np.concatenate((data, extended_array))
+        return np.concatenate((scale_data, extended_array))
