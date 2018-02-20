@@ -1,0 +1,6 @@
+.projet
+.pydevproject
+.settings
+.idea
+.ipynb_checkpoints
+__pycache__
